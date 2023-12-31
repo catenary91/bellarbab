@@ -1,10 +1,10 @@
 from django.db import models
 
-MENU_TYPES = {
+MENU_TYPES = (
     ('B', 'breakfast'),
     ('L', 'lunch'),
     ('D', 'dinner'),
-}
+)
 
 class Menu(models.Model):
     date = models.DateField()
