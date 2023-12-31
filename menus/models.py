@@ -13,4 +13,5 @@ class Menu(models.Model):
     calories = models.IntegerField()
 
     def __str__(self):
-        return f'{self.date} / {MENU_TYPES[self.mtype]}'
+        menu_dict = {'B': 'breakfast','L': 'lunch','D': 'dinner'}
+        return f'{self.date} / {menu_dict[self.mtype]}'
