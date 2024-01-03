@@ -4,7 +4,7 @@ from datetime import date, timedelta, datetime
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import menu_to_str
+from .models import Usage, menu_to_str
 
 def between(s, start, end):
     if end == '':
@@ -79,3 +79,7 @@ def validate_date(request):
 
     # print(str(target_date))
     return JsonResponse({'status': 'SUCCESS', 'value': str(target_date)})
+
+def get_usage_info(request):
+    usages = Usage.objects.all()
+    return JsonResponse({"usages": [h.to_json() for h in usages]})

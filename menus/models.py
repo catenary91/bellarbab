@@ -46,3 +46,9 @@ class Menu(models.Model):
 class Usage(models.Model):
     date = models.DateField()
     count = models.IntegerField()
+
+    def to_json(self):
+        return {
+            "x": self.date.strftime('%Y-%m-%d'),
+            "y": self.count,
+        }

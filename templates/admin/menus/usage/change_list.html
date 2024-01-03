@@ -1,0 +1,124 @@
+{% extends "admin/change_list.html" %}
+{% load static %}
+
+<!-- Override extrahead to add Chart.js -->
+{% block extrahead %}
+{{ block.super }}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  axios.get('/menus/getusageinfo')
+  .then((response) => {
+    const ctx = document.getElementById('chart1').getContext('2d');
+    const ctx2 = document.getElementById('chart2').getContext('2d');
+
+    const signupData = response.data.usages;
+    
+    const labels = signupData.map((d, i, source) => {
+      return d.x;
+    })
+
+    const data = signupData.map((d, i, source) => {
+      return d.y;
+    })
+
+    var acc = 0
+    const acc_data = signupData.map((d, i, source) => {
+      acc = acc + d.y;
+      return acc;
+    })
+
+    const config = {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [
+        {
+          label: 'API 사용량',
+          data: data,
+          backgroundColor: 'rgb(255, 99, 132)',
+          borderColor: 'rgb(255, 99, 132)',
+          fill: false,
+          tension: 0,
+        },
+        ]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          yAxes: [{
+            type: 'linear',
+            ticks: {
+              beginAtZero: true,
+              min: 0,
+            }
+          }],
+          xAxes: [{
+            ticks:{
+              callback: (value, index, ticks) => {
+                return value.slice(5, 10);
+              }    
+            }     
+          }],
+        },
+      },
+    }; //config
+
+    const config2 = {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [
+        {
+          label: '누적 사용량',
+          data: acc_data,
+          backgroundColor: 'rgb(255, 99, 132)',
+          borderColor: 'rgb(255, 99, 132)',
+          fill: false,
+          tension: 0,
+        },
+        ]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          yAxes: [{
+            type: 'linear',
+            ticks: {
+              beginAtZero: true,
+              min: 0,
+            }
+          }],
+          xAxes: [{
+            ticks:{
+              callback: (value, index, ticks) => {
+                return value.slice(5, 10);
+              }    
+            }     
+          }],
+        },
+      },
+    }; //config
+
+    const chart = new Chart(ctx, config);
+
+    const chart2  = new Chart(ctx2, config2);
+
+  }); //axios
+
+
+});
+</script>
+{% endblock %}
+
+{% block content %}
+<!-- Render our chart -->
+<div style="width: 80%;">
+  <canvas style="margin-bottom: 30px; width: 60%; height: 50%;" id="chart1"></canvas>
+  <canvas style="margin-bottom: 30px; width: 60%; height: 50%;" id="chart2"></canvas>
+</div>
+<!-- Render the rest of the ChangeList view -->
+{{ block.super }}
+{% endblock %}
