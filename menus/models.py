@@ -52,3 +52,6 @@ class Usage(models.Model):
             "x": self.date.strftime('%Y-%m-%d'),
             "y": self.count,
         }
+    
+    def __str__(self):
+        return f'{self.date}\t[{self.count}]'
