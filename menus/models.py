@@ -15,6 +15,7 @@ def menu_to_str(target_date, mtype):
     else:
         usage = Usage.objects.get(date=date.today())
         usage.count = usage.count + 1
+        usage.save()
 
     results = Menu.objects.filter(date=target_date, mtype=mtype)
     if (results.count()==0): 
