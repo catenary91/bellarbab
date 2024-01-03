@@ -1,4 +1,4 @@
-import json, re
+import json, re, traceback
 from datetime import date, timedelta, datetime
 
 from django.http import JsonResponse
@@ -29,14 +29,12 @@ def get_menu(request):
     date = datetime.strptime(date_str, '%Y-%m-%d').date()
     mtype_o = data['action']['params']['menu_type']
     mtype = {'조식': 'B', '석식': 'D'}[mtype_o]
-
     return JsonResponse({'answer': menu_to_str(date, mtype)})
 
 
 @csrf_exempt
 def validate_date(request):
     date_str = json.loads(request.body)['value']['origin'].replace(' ', '')
-    print(date_str)
     
     try:
         if date_str == '오늘':
@@ -59,7 +57,7 @@ def validate_date(request):
             target_date = date(2024, int(month), int(day))
 
         elif re.match('^[월화수목금토일](요일)?$', date_str):
-            weekday = date_str[0]
+            weekday = weekday_str.index(date_str[0])
             today_weekday = date.today().weekday()
             target_date = date.today() + timedelta(days=weekday - today_weekday)
 
@@ -69,14 +67,15 @@ def validate_date(request):
             target_date = date.today() + timedelta(days=weekday - today_weekday)
         
         elif re.match('^다음주[월화수목금토일](요일)?$', date_str):
-            weekday = weekday_str.index(between(date_str, '이번주', '')[0])
+            weekday = weekday_str.index(between(date_str, '다음주', '')[0])
             today_weekday = date.today().weekday()
             target_date = date.today() + timedelta(days=weekday - today_weekday + 7)
 
         else:
             raise ''
     except:
+        traceback.print_exc()
         return JsonResponse({'status': 'FAIL'})
 
-    print(target_date)
+    print(str(target_date))
     return JsonResponse({'status': 'SUCCESS', 'value': str(target_date)})
