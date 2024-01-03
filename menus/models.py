@@ -10,6 +10,11 @@ MENU_TYPES = (
 weekday_str = ['월', '화', '수', '목', '금', '토', '일']
 
 def menu_to_str(target_date, mtype):
+    if Usage.objects.filter(date=date.today()).count()==0:
+        Usage(date=date.today(), count=1).save()
+    else:
+        usage = Usage.objects.get(date=date.today())
+        usage.count = usage.count + 1
 
     results = Menu.objects.filter(date=target_date, mtype=mtype)
     if (results.count()==0): 
@@ -37,3 +42,7 @@ class Menu(models.Model):
     def __str__(self):
         menu_dict = {'B': 'breakfast','L': 'lunch','D': 'dinner'}
         return f'{self.date} / {menu_dict[self.mtype]}'
+    
+class Usage(models.Model):
+    date = models.DateField()
+    count = models.IntegerField()

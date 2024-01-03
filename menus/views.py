@@ -77,5 +77,5 @@ def validate_date(request):
         traceback.print_exc()
         return JsonResponse({'status': 'FAIL'})
 
-    print(str(target_date))
+    # print(str(target_date))
     return JsonResponse({'status': 'SUCCESS', 'value': str(target_date)})
