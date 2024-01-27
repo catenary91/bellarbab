@@ -6,5 +6,7 @@ urlpatterns = [
     path('today', views.get_today, name='today'),
     path('validate-date', views.validate_date, name='validate-date'),
 
+    path('upload-data', views.upload_data, name='update-data'),
+
     path('getusageinfo', views.get_usage_info, name='get_usage_info')
 ]

@@ -4,7 +4,7 @@ from datetime import date, timedelta, datetime
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import Usage, menu_to_str
+from .models import Menu, Usage, menu_to_str
 
 def between(s, start, end):
     if end == '':
@@ -83,3 +83,23 @@ def validate_date(request):
 def get_usage_info(request):
     usages = Usage.objects.all()
     return JsonResponse({"usages": [h.to_json() for h in usages]})
+
+def add_menu(menu, target_date, mtype):
+    m = Menu(date=target_date, mtype=mtype, content=';'.join(menu), calories=0)
+    m.save()
+
+@csrf_exempt
+def upload_data(request):
+    data = json.loads(request.body)
+    menus = data['menus']
+    target_date = datetime.strptime(data['start_date'], '%Y-%m-%d').date()
+
+    for breakfast, dinner in menus:
+        if breakfast != []:
+            add_menu(breakfast, target_date, 'B')
+        if dinner != []:
+            add_menu(breakfast, target_date, 'D')
+
+        target_date = target_date + timedelta(days=1)     
+
+    
