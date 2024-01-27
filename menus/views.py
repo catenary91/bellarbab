@@ -102,4 +102,4 @@ def upload_data(request):
 
         target_date = target_date + timedelta(days=1)     
 
-    
+    return JsonResponse({'status': 'SUCCESS'})
