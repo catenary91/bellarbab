@@ -85,6 +85,9 @@ def get_usage_info(request):
     return JsonResponse({"usages": [h.to_json() for h in usages]})
 
 def add_menu(menu, target_date, mtype):
+    if Menu.objects.filter(date=target_date, mtype=mtype).count() != 0:
+        return
+    
     m = Menu(date=target_date, mtype=mtype, content=';'.join(menu), calories=0)
     m.save()
 
