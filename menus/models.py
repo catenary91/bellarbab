@@ -24,15 +24,8 @@ def menu_to_str(target_date, mtype):
     mtype_str = {'B': '조식', 'D': '석식'}[mtype]
     today_str = f'{str(target_date)}({weekday_str[target_date.weekday()]})'
 
-    if mtype=='B':
-        menu = menu.content.replace(';', '\n      ')
-        i = menu.find(':')
-        menu1 = menu[:i]
-        menu2 = menu[i+1:]
-        return f'{today_str}의 {mtype_str}입니다!\n\n한식\n      {menu1}\n양식\n      {menu2}'
-    else: 
-        menu = menu.content.replace(';', '\n')
-        return f'{today_str}의 {mtype_str}입니다!\n\n{menu}'
+    menu = menu.content.replace(';', '\n')
+    return f'{today_str}의 {mtype_str}입니다!\n\n{menu}'
 
 class Menu(models.Model):
     date = models.DateField()
