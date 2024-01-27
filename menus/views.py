@@ -98,7 +98,7 @@ def upload_data(request):
         if breakfast != []:
             add_menu(breakfast, target_date, 'B')
         if dinner != []:
-            add_menu(breakfast, target_date, 'D')
+            add_menu(dinner, target_date, 'D')
 
         target_date = target_date + timedelta(days=1)     
 
