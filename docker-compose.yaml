@@ -1,0 +1,13 @@
+version: "3"
+
+volumes:
+  bellarbab-db:
+    external: true
+
+services:
+  backend:
+    image: bellarbab
+    volumes:
+      - bellarbab-db:/app/database
+    ports:
+      - 8000:8000
