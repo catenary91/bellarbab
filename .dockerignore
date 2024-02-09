@@ -1,2 +1,6 @@
 bellarbab_env
 docker-compose.yaml
+.gitignore
+database
+static
+nginx.conf
