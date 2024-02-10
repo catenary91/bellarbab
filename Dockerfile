@@ -8,7 +8,7 @@ RUN ["pip",  "install", "-r", "requirements.txt"]
 
 COPY . .
 
-EXPOSE 8001/tcp
+EXPOSE 80/tcp
 VOLUME ["/app/database"]
 
-CMD ["gunicorn", "--bind", "0.0.0.0:8001", "bellarbab.wsgi:application"]
+CMD ["gunicorn", "--bind", "0.0.0.0:80", "bellarbab.wsgi:application"]
