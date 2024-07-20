@@ -5,7 +5,7 @@ on:
 
 jobs:
   CI-CD:
-    runs-on: hss
+    runs-on: self-hosted
     steps:
       - name: Repository checkout
         uses: actions/checkout@v4
