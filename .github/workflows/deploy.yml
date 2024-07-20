@@ -1,0 +1,24 @@
+name: Deploy app to hss
+on:
+  push:
+    branches: ["deploy"]
+
+jobs:
+  CI-CD:
+    runs-on: hss
+    steps:
+      - name: Repository checkout
+        uses: actions/checkout@v4
+      
+      - name: Docker compose down
+        run: docker compose down
+
+      - name: Delete previous docker images
+        continue-on-error: true
+        run: docker image rm bellarbab
+      
+      - name: Build the docker image
+        run: docker build --tag bellarbab .
+      
+      - name: Docker compose up
+        run: docker compose up -d
