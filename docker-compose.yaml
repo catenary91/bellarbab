@@ -12,6 +12,7 @@ services:
       - "8000:80"
     depends_on:
       - django
+    restart: always
 
   django:
     image: bellarbab
@@ -26,6 +27,7 @@ services:
      - network
     expose:
       - "80"
+    restart: always
 
 volumes:
   bellarbab-db:
