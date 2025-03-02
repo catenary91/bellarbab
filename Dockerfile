@@ -12,4 +12,4 @@ COPY . .
 EXPOSE 80/tcp
 VOLUME ["/app/database"]
 
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "bellarbab.wsgi:application"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
